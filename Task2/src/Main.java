@@ -1,7 +1,6 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
+package Task2.src;
+
+import java.util.*;
 
 public class Main {
 
@@ -19,6 +18,7 @@ public class Main {
 
     static class BinaryTree {
         Node root;
+        static HashSet<Integer> elementDict= new HashSet<>();
 
         private Node addElement(Node current, int data) {
             if (current == null) {
@@ -32,11 +32,16 @@ public class Main {
             return current;
         }
 
-        public void addElement(int data) {
+        public boolean addElement(int data) {
+            if (elementDict.contains(data)){
+                return false;
+            }
             root = addElement(root, data);
+            return true;
+
         }
 
-        private void findLeaves(Node current, List<Integer> leaves) {
+        private static void  findLeaves(Node current, List<Integer> leaves) {
             if (current == null) {
                 return;
             }
@@ -54,26 +59,34 @@ public class Main {
             Collections.sort(leaves);
             return leaves;
         }
+        public static void readInput(BinaryTree tree){
+            try (Scanner scanner= new Scanner(System.in)){
+                while (true) {
+                    int input = scanner.nextInt();
+                    if (input == 0) {
+                        break;
+                    }
+                    if (tree.addElement(input)){
+                        BinaryTree.elementDict.add(input);
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Following error happened "+e.getMessage());
+            }
+
+        }
+        public static void printTree(BinaryTree tree){
+            List<Integer> leaves = tree.getLeaves();
+            for (int leaf : leaves) {
+                System.out.print(leaf + " ");
+            }
+            System.out.println();
+        }
     }
 
-
-
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
         BinaryTree tree = new BinaryTree();
-
-        while (true) {
-            int input = scanner.nextInt();
-            if (input == 0) {
-                break;
-            }
-            tree.addElement(input);
-        }
-
-        List<Integer> leaves = tree.getLeaves();
-        for (int leaf : leaves) {
-            System.out.print(leaf + " ");
-        }
-        System.out.println();
+        BinaryTree.readInput(tree);
+        BinaryTree.printTree(tree);
     }
 }
