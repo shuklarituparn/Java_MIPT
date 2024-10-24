@@ -4,6 +4,19 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
+    public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            int a = scanner.nextInt();
+            int b = scanner.nextInt();
+            int result = GCD.gcd(a, b);
+            System.out.println(result);
+        } catch (InputMismatchException e) {
+            System.err.println("Invalid input! Please enter integers only.");
+        } catch (Exception e) {
+            System.err.println("An unexpected error occurred: " + e.getMessage());
+        }
+    }
+
     public static class GCD {
         public static int gcd(int a, int b) {
             if (a == 0 || b == 0)
@@ -23,19 +36,6 @@ public class Main {
             }
 
             return a << shift;
-        }
-    }
-
-    public static void main(String[] args) {
-        try (Scanner scanner = new Scanner(System.in)) {
-            int a = scanner.nextInt();
-            int b = scanner.nextInt();
-            int result = GCD.gcd(a, b);
-            System.out.println(result);
-        } catch (InputMismatchException e) {
-            System.err.println("Invalid input! Please enter integers only.");
-        } catch (Exception e) {
-            System.err.println("An unexpected error occurred: " + e.getMessage());
         }
     }
 }
