@@ -1,10 +1,10 @@
 package HW1_Task3.src;
 
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class Main {
-    public static int [] prefixFunction(String pattern){
+    public static int[] prefixFunction(String pattern) {
         int patternLen = pattern.length();
         int[] pi = new int[patternLen];
         int j = 0;
@@ -18,13 +18,23 @@ public class Main {
             pi[l] = j;
         }
         return pi;
-
     }
-    public static class KMP{
+
+    public static void main(String[] args) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
+            String pattern = br.readLine();
+            String text = br.readLine();
+            KMP.kmpSearch(text, pattern);
+        } catch (Exception e) {
+            System.out.println("following problem occurred " + e.getMessage());
+        }
+    }
+
+    public static class KMP {
         public static void kmpSearch(String text, String pattern) {
             int textLen = text.length();
             int patternLen = pattern.length();
-            int [] prefixString= prefixFunction(pattern);
+            int[] prefixString = prefixFunction(pattern);
             int k = 0;
             for (int i = 0; i < textLen; i++) {
                 while (k > 0 && pattern.charAt(k) != text.charAt(i)) {
@@ -41,15 +51,5 @@ public class Main {
         }
 
 
-    }
-
-    public static void main(String[] args)  {
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
-                String pattern = br.readLine();
-                String text = br.readLine();
-                KMP.kmpSearch(text, pattern);
-            }catch (Exception e) {
-                System.out.println("following problem occurred " + e.getMessage());
-            }
     }
 }
