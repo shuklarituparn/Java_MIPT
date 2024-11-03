@@ -1,0 +1,46 @@
+class zooDemo {
+    public static void main(String[] args) {
+        zoo zoo = new zoo();
+
+        Animal cat = new Cat(1, 0.3);
+        Animal dog = new Dog(2, 0.5);
+        Animal hippo = new Hippo(3, 1.5);
+        Animal horse = new Horse(4, 1.6);
+        Animal fish = new Fish(5, 0.1);
+
+        zoo.addAnimal(cat);
+        zoo.addAnimal(dog);
+        zoo.addAnimal(hippo);
+        zoo.addAnimal(horse);
+        zoo.addAnimal(fish);
+
+        Supervisor john = new zooKeeper(1, "John");
+        Supervisor jane = new zooKeeper(2, "Jane");
+
+        zoo.assignSupervisor(1, john);
+        zoo.assignSupervisor(2, john);
+        zoo.assignSupervisor(3, jane);
+        zoo.assignSupervisor(4, jane);
+        zoo.assignSupervisor(5, john);
+
+        zoo.addObserver(new zooObserver() {
+            @Override
+            public void onSupervisorChanged(Animal animal, Supervisor oldSupervisor, Supervisor newSupervisor) {
+                System.out.println("Animal " + animal.getId() + " changed supervisor from "
+                        + (oldSupervisor != null ? oldSupervisor.getName() : "none")
+                        + " to " + newSupervisor.getName());
+            }
+        });
+
+        System.out.println("Animals supervised by John: " + zoo.getAnimalsBySupervisorName("John").size());
+        System.out.println("Animals supervised by Jane: " + zoo.getAnimalsBySupervisorName("Jane").size());
+
+        System.out.println("Animals that can make sound: " + zoo.getAnimalsThatCanMakeSound().size());
+        System.out.println("Animals above 1m height: " + zoo.getAnimalsAboveHeight(1.0).size());
+
+        System.out.println("Cats in the zoo: " + zoo.getAnimalsByType(Cat.class).size());
+
+        zoo.assignSupervisor(1, jane);
+        zoo.assignSupervisor(1, john);
+    }
+}
