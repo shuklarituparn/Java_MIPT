@@ -26,8 +26,5 @@ replay_pid*
 
 #The intelliJ directory
 .idea
-misc
-Task2/src/Main$BinaryTree.class
-Task2/src/Main$Node.class
-Task2/src/Main.class
+
 
