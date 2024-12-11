@@ -1,138 +1,11 @@
+package core;
+
+import animals.AbstractAnimal;
+import animals.Animal;
+import management.Supervisor;
+import management.zooObserver;
+
 import java.util.*;
-
-interface Animal {
-    int getId();
-    double getHeight();
-    boolean canMakeSound();
-    void setSupervisor(Supervisor supervisor);
-    Supervisor getSupervisor();
-    String makeSound();
-}
-
-interface Supervisor {
-    int getId();
-    String getName();
-}
-
-interface zooObserver {
-    void onSupervisorChanged(Animal animal, Supervisor oldSupervisor, Supervisor newSupervisor);
-}
-
-abstract class AbstractAnimal implements Animal {
-    private final int id;
-    private final double height;
-    private Supervisor supervisor;
-
-    public AbstractAnimal(int id, double height) {
-        this.id = id;
-        this.height = height;
-    }
-
-    @Override
-    public int getId() {
-        return id;
-    }
-
-    @Override
-    public double getHeight() {
-        return height;
-    }
-
-    @Override
-    public void setSupervisor(Supervisor supervisor) {
-        this.supervisor = supervisor;
-    }
-
-    @Override
-    public Supervisor getSupervisor() {
-        return supervisor;
-    }
-
-    @Override
-    public boolean canMakeSound() {
-        return true;
-    }
-}
-
-class Cat extends AbstractAnimal {
-    public Cat(int id, double height) {
-        super(id, height);
-    }
-
-    @Override
-    public String makeSound() {
-        return "Meow";
-    }
-}
-
-class Dog extends AbstractAnimal {
-    public Dog(int id, double height) {
-        super(id, height);
-    }
-
-    @Override
-    public String makeSound() {
-        return "Woof";
-    }
-}
-
-class Hippo extends AbstractAnimal {
-    public Hippo(int id, double height) {
-        super(id, height);
-    }
-
-    @Override
-    public String makeSound() {
-        return "Grunt";
-    }
-}
-
-class Horse extends AbstractAnimal {
-    public Horse(int id, double height) {
-        super(id, height);
-    }
-
-    @Override
-    public String makeSound() {
-        return "Neigh";
-    }
-}
-
-class Fish extends AbstractAnimal {
-    public Fish(int id, double height) {
-        super(id, height);
-    }
-
-    @Override
-    public boolean canMakeSound() {
-        return false;
-    }
-
-    @Override
-    public String makeSound() {
-        return "";
-    }
-}
-
-class zooKeeper implements Supervisor {
-    private final int id;
-    private final String name;
-
-    public zooKeeper(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    @Override
-    public int getId() {
-        return id;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-}
 
 class zoo {
     private final Map<Integer, Animal> animals;
@@ -172,11 +45,11 @@ class zoo {
         }
     }
 
-    public Animal getAnimalById(int id) {
+    public Animal getAnimalById(Integer id) {
         return animals.get(id);
     }
 
-    public void removeAnimal(int id) {
+    public void removeAnimal(Integer id) {
         Animal animal = animals.remove(id);
         if (animal != null) {
             animalsByHeight.remove(animal);
@@ -192,7 +65,7 @@ class zoo {
         }
     }
 
-    public void assignSupervisor(int animalId, Supervisor newSupervisor) {
+    public void assignSupervisor(Integer animalId, Supervisor newSupervisor) {
         Animal animal = animals.get(animalId);
         if (animal != null) {
             Supervisor oldSupervisor = animal.getSupervisor();
@@ -211,7 +84,7 @@ class zoo {
         }
     }
 
-    public Set<Animal> getAnimalsBySupervisorId(int supervisorId) {
+    public Set<Animal> getAnimalsBySupervisorId(Integer supervisorId) {
         return supervisorAnimals.getOrDefault(supervisorId, new HashSet<>());
     }
 

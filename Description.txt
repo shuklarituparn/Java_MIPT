@@ -1,4 +1,4 @@
-The zoo is home to animals - cats, dogs, hippos, horses and fish.
+The core.zoo is home to animals - cats, dogs, hippos, horses and fish.
 
 All animals except fish can make their own sound.
 
@@ -10,9 +10,9 @@ It is necessary to come up with and implement class Zoo.
 
 Implementation requirements (can be divided into several interfaces that class Zoo will implement)
 
-The default constructor that creates an empty zoo
+The default constructor that creates an empty core.zoo
 
-A constructor with one argument that creates a zoo with a given set of animals
+A constructor with one argument that creates a core.zoo with a given set of animals
 
 A method for adding an animal
 
@@ -28,7 +28,7 @@ A method for obtaining all animals with a height higher than the specified one
 
 A method for obtaining all animals that can make sounds
 
-A method for getting all the animals in a zoo of a certain type
+A method for getting all the animals in a core.zoo of a certain type
 
 A method for observing events, when a list of animal’s supervisors changes. Implement pattern Observer
 
