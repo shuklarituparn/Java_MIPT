@@ -27,6 +27,3 @@ replay_pid*
 #The intelliJ directory
 .idea
 
-Task1/src/Main$GCD.class
-Task1/src/Main.class
-misc
