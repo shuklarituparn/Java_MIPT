@@ -5,22 +5,21 @@ import interfaces.Taxi;
 import model.Order;
 import model.TaxiDriver;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class TaxiDispatcher implements Dispatcher {
     private final List<Taxi> taxis;
     private final Queue<Order> orderQueue;
-    private final Lock lock;
+    private ExecutorService executorService;
 
     public TaxiDispatcher() {
-        this.taxis = new ArrayList<>();
+        this.taxis = new CopyOnWriteArrayList<>();
         this.orderQueue = new ConcurrentLinkedQueue<>();
-        this.lock = new ReentrantLock();
     }
 
     public void addTaxi(Taxi taxi) {
@@ -44,9 +43,27 @@ public class TaxiDispatcher implements Dispatcher {
     }
 
     public void startDispatch() {
+        executorService = Executors.newFixedThreadPool(taxis.size());
         for (Taxi taxi : taxis) {
-            Thread taxiThread = new Thread((Runnable) taxi);
-            taxiThread.start();
+            executorService.submit((Runnable) taxi);
         }
+    }
+
+    public void shutdown() {
+        if (executorService != null) {
+            taxis.forEach(taxi -> {
+                if (taxi instanceof TaxiDriver driver) {
+                    driver.stop();
+                }
+            });
+            executorService.shutdown();
+        }
+    }
+
+    public boolean hasActiveOrders() {
+        return !orderQueue.isEmpty() || taxis.stream()
+                .filter(taxi -> taxi instanceof TaxiDriver)
+                .map(taxi -> (TaxiDriver) taxi)
+                .anyMatch(driver -> !driver.isAvailable());
     }
 }

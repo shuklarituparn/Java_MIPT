@@ -4,27 +4,26 @@ import interfaces.Dispatcher;
 import interfaces.Taxi;
 import service.TaxiDispatcher;
 
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TaxiDriver implements Taxi, Runnable {
     private final Dispatcher dispatcher;
     private final int id;
-    private final Lock lock;
-    private volatile boolean available;
+    private final AtomicBoolean available;
+    private volatile boolean running;
 
     public TaxiDriver(int id, Dispatcher dispatcher) {
         this.id = id;
         this.dispatcher = dispatcher;
-        this.lock = new ReentrantLock();
-        this.available = true;
+        this.available = new AtomicBoolean(true);
+        this.running = true;
     }
 
     @Override
     public void executeOrder(Order order) {
         System.out.println("Taxi " + id + " starting order: " + order.getDetails());
         try {
-            Thread.sleep((long) (Math.random() * 50000) + 1000);
+            Thread.sleep((long) (Math.random() * 5000) + 1000);
             System.out.println("Taxi " + id + " finished order: " + order.getDetails());
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
@@ -43,30 +42,31 @@ public class TaxiDriver implements Taxi, Runnable {
     }
 
     public boolean isAvailable() {
-        return available;
+        return available.get();
     }
 
-    public void setAvailability(boolean available) {
-        this.available = available;
+    public void setAvailability(boolean availability) {
+        available.set(availability);
+    }
+
+    public void stop() {
+        running = false;
     }
 
     @Override
     public void run() {
-        while (true) {
+        while (running) {
             try {
-                Thread.sleep(1000);
-                lock.lock();
-                if (available && dispatcher instanceof TaxiDispatcher taxiDispatcher) {
+                if (available.get() && dispatcher instanceof TaxiDispatcher taxiDispatcher) {
                     Order order = taxiDispatcher.getNextOrder();
-                    if (order != null) {
-                        available = false;
+                    if (order != null && available.compareAndSet(true, false)) {
                         executeOrder(order);
                     }
                 }
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-            } finally {
-                lock.unlock();
+                break;
             }
         }
     }
