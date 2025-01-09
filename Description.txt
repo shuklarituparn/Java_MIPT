@@ -1,0 +1,39 @@
+The core.zoo is home to animals - cats, dogs, hippos, horses and fish.
+
+All animals except fish can make their own sound.
+
+Each animal has exactly one supervisor, but the supervisor can keep an eye on several animals.
+
+Each animal has a height and a unique id. Each supervisor has a name and a unique id.
+
+It is necessary to come up with and implement class Zoo.
+
+Implementation requirements (can be divided into several interfaces that class Zoo will implement)
+
+The default constructor that creates an empty core.zoo
+
+A constructor with one argument that creates a core.zoo with a given set of animals
+
+A method for adding an animal
+
+Method of searching/deleting an animal by id
+
+Methods by which a certain supervisor can be assigned to a specific animal
+
+A method for getting all the animals assigned to a supervisor with some id
+
+A method for getting all the animals that are being watched by wardens with a specific name
+
+A method for obtaining all animals with a height higher than the specified one
+
+A method for obtaining all animals that can make sounds
+
+A method for getting all the animals in a core.zoo of a certain type
+
+A method for observing events, when a list of animal’s supervisors changes. Implement pattern Observer
+
+Point counting (max = 15)
+All requirements are completed  - +6 points
+the implementation is correct from the point of view of the principles of OOP - +3 points
+Time-optimal implementation. We believe that there can be a lot of animals and supervisors.
+To perform this step, you may need data structures such as HashMap and TreeSet  - +6 points
